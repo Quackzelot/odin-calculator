@@ -11,6 +11,9 @@ function multiply(number1, number2) {
 }
 
 function divide(number1, number2) {
+  if (number2 == 0) {
+    alert("Not gonna happen!");
+  }
   return number1 / number2;
 }
 
@@ -18,67 +21,113 @@ function squared(number) {
   return number * number;
 }
 
-function buttonClickNumbers(number) {
-  if (operator == "") {
-    number1 = number1 + number;
-  } else {
-    number2 = number2 + number;
-  }
-  display.textContent = number1 + operator + number2;
+function buttonClickInput(number) {
+  input = input + number;
+  numbers = numbers + number;
+  display.textContent = display.textContent + input;
+  input = "";
 }
 
-let number1 = "";
+function buttonClickOperator(sign) {
+
+  if (numbers == "") {
+  } else {
+    inputs.push(numbers);
+    if (
+      inputs[inputs.length - 1] == "+" ||
+      inputs[inputs.length - 1] == "-" ||
+      inputs[inputs.length - 1] == "*" ||
+      inputs[inputs.length - 1] == "/"
+    ) {
+    } else {
+      inputs.push(sign);
+      console.log(inputs);
+      numbers = "";
+      operator = sign;
+      display.textContent = display.textContent + operator;
+      operator = "";
+    }
+  }
+}
+
+let input = "";
 let operator = "";
-let number2 = "";
+let numbers = "";
+let inputs = [];
 
 const display = document.querySelector(".display");
 
 const btn0 = document.querySelector("#btn0");
 btn0.addEventListener("click", function () {
-  buttonClickNumbers(0);
+  buttonClickInput(0);
 });
 
 const btn1 = document.querySelector("#btn1");
 btn1.addEventListener("click", function () {
-  buttonClickNumbers(1);
+  buttonClickInput(1);
 });
 
 const btn2 = document.querySelector("#btn2");
 btn2.addEventListener("click", function () {
-  buttonClickNumbers(2);
+  buttonClickInput(2);
 });
 
 const btn3 = document.querySelector("#btn3");
 btn3.addEventListener("click", function () {
-  buttonClickNumbers(3);
+  buttonClickInput(3);
 });
 
 const btn4 = document.querySelector("#btn4");
 btn4.addEventListener("click", function () {
-  buttonClickNumbers(4);
+  buttonClickInput(4);
 });
 
 const btn5 = document.querySelector("#btn5");
 btn5.addEventListener("click", function () {
-  buttonClickNumbers(5);
+  buttonClickInput(5);
 });
 
 const btn6 = document.querySelector("#btn6");
 btn6.addEventListener("click", function () {
-  buttonClickNumbers(6);
+  buttonClickInput(6);
 });
 
 const btn7 = document.querySelector("#btn7");
 btn7.addEventListener("click", function () {
-  buttonClickNumbers(7);
+  buttonClickInput(7);
 });
 
 const btn8 = document.querySelector("#btn8");
 btn8.addEventListener("click", function () {
-  buttonClickNumbers(8);
+  buttonClickInput(8);
 });
 
 const btn9 = document.querySelector("#btn9");
 btn9.addEventListener("click", function () {
-  buttonClickNumbers(9);
+  buttonClickInput(9);
+});
+
+const btnDot = document.querySelector("#btnDot");
+btnDot.addEventListener("click", function () {
+  buttonClickInput(".");
+});
+
+const btnPlus = document.querySelector("#btnPlus");
+btnPlus.addEventListener("click", function () {
+  buttonClickOperator("+");
+});
+
+const btnMinus = document.querySelector("#btnMinus");
+btnMinus.addEventListener("click", function () {
+  buttonClickOperator("-");
+});
+
+const btnSlash = document.querySelector("#btnSlash");
+btnSlash.addEventListener("click", function () {
+  buttonClickOperator("/");
+});
+
+const btnAsterisk = document.querySelector("#btnAsterisk");
+btnAsterisk.addEventListener("click", function () {
+  buttonClickOperator("*");
 });
