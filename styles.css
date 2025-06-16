@@ -1,0 +1,43 @@
+* {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+
+}
+
+.chasis {
+    display: flex;
+    flex-flow: row wrap;
+    background-color: lightgrey;
+    border: 1px solid black;
+    border-radius: 15px;
+    height: 385px;
+    width: 285px;
+    padding: 15px;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+}
+
+.display {
+    background-color: #FCFCFC;
+    height: 50px;
+    width: 285px;
+    padding-right: 15px;
+    border: 2px solid black;
+}
+
+button {
+    width: 65px;
+    height: 45px;
+    font-size: 16px;
+    background-color: #FCFCFC;
+}
+
+p {
+    align-self: flex-end;
+    font-size: 32px;
+}
