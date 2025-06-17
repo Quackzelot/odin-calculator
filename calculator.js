@@ -17,42 +17,48 @@ function divide(number1, number2) {
   return number1 / number2;
 }
 
-function squared(number) {
-  return number * number;
+function resetAll() {
+  inputs = [];
+  display.textContent = "";
 }
 
 function buttonClickInput(number) {
-  input = input + number;
-  numbers = numbers + number;
-  display.textContent = display.textContent + input;
-  input = "";
-}
-
-function buttonClickOperator(sign) {
-
-  if (numbers == "") {
-  } else {
-    inputs.push(numbers);
-    if (
-      inputs[inputs.length - 1] == "+" ||
-      inputs[inputs.length - 1] == "-" ||
-      inputs[inputs.length - 1] == "*" ||
-      inputs[inputs.length - 1] == "/"
-    ) {
+  if (
+    (inputs[inputs.length - 1] == 0 &&
+      number == 0 &&
+      operators.includes(inputs[inputs.length - 2])) ||
+    (inputs[inputs.length - 1] == 0 && number == 0 && inputs.length == 1)
+  ) {
+  } else if (
+    (inputs[inputs.length - 1] == 0 &&
+      operators.includes(inputs[inputs.length - 2])) ||
+    (inputs[inputs.length - 1] == 0 && inputs.length == 1)
+  ) {
+    if (number == ".") {
+      inputs.push(number);
+      display.textContent = inputs.join("");
     } else {
-      inputs.push(sign);
-      console.log(inputs);
-      numbers = "";
-      operator = sign;
-      display.textContent = display.textContent + operator;
-      operator = "";
+      inputs.splice(-1, 1);
+      inputs.push(number);
+      display.textContent = inputs.join("");
     }
+  } else {
+    inputs.push(number);
+    display.textContent = inputs.join("");
+    console.log(inputs);
   }
 }
 
-let input = "";
-let operator = "";
-let numbers = "";
+function buttonClickOperator(sign) {
+  if (operators.includes(inputs[inputs.length - 1]) || inputs.length == 0) {
+  } else {
+    inputs.push(sign);
+    console.log(inputs);
+    display.textContent = inputs.join("");
+  }
+}
+
+let operators = ["+", "-", "*", "/"];
 let inputs = [];
 
 const display = document.querySelector(".display");
@@ -130,4 +136,9 @@ btnSlash.addEventListener("click", function () {
 const btnAsterisk = document.querySelector("#btnAsterisk");
 btnAsterisk.addEventListener("click", function () {
   buttonClickOperator("*");
+});
+
+const btnClear = document.querySelector("#btnClear");
+btnClear.addEventListener("click", function () {
+  resetAll();
 });
