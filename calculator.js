@@ -17,9 +17,31 @@ function divide(number1, number2) {
   return number1 / number2;
 }
 
+function deleteLastInput() {
+  inputs.pop();
+  display.textContent = inputs.join("");
+}
+
 function resetAll() {
   inputs = [];
   display.textContent = "";
+}
+
+function IndexOfLastOperator(array) {
+  for (let i = array.length-1; i >= 0; i--) {
+    if (operators.includes(array[i])) {
+      return i;
+    }
+  }
+}
+
+function squareLastInput(array) {
+  let toSquareArray = array.slice(IndexOfLastOperator(array)+1);
+  toSquareArray = toSquareArray.join("");
+  toSquareArray = toSquareArray * toSquareArray;
+  array.splice(IndexOfLastOperator(array)+1, 100);
+  array.push(toSquareArray);
+  display.textContent = array.join("");
 }
 
 function buttonClickInput(number) {
@@ -142,3 +164,13 @@ const btnClear = document.querySelector("#btnClear");
 btnClear.addEventListener("click", function () {
   resetAll();
 });
+
+const btnDelete = document.querySelector("#btnDelete");
+btnDelete.addEventListener("click", function () {
+  deleteLastInput();
+});
+
+const btnSquared = document.querySelector("#btnSquared");
+btnSquared.addEventListener("click", function () {
+  squareLastInput(inputs);
+})
