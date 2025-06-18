@@ -47,7 +47,8 @@ function changeSign(array) {
 
 function IndexOfLastOperator(array) {
   for (let i = array.length-1; i >= 0; i--) {
-    if (operators.includes(array[i]) && operators.includes(array[i-1])) {
+    if (operators.includes(array[i]) && operators.includes(array[i-1]) ||
+        operators.includes(array[i]) && i-1 < 0) {
       return i-1;
     }
     else if (operators.includes(array[i])) {
