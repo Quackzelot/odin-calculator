@@ -27,9 +27,30 @@ function resetAll() {
   display.textContent = "";
 }
 
+function changeSign(array) {
+  let needSignChanged = array.slice(IndexOfLastOperator(array)+1);
+  array.splice(IndexOfLastOperator(array)+1, 100);
+  if (needSignChanged[0] == "-") {
+    needSignChanged.shift();
+    for (let i = 0; i < needSignChanged.length; i++) {
+      array.push(needSignChanged[i]);
+    }
+  }
+  else {
+    needSignChanged.unshift("-");
+    for (let i = 0; i < needSignChanged.length; i++) {
+      array.push(needSignChanged[i]);
+    }
+  }
+  display.textContent = array.join("");
+}
+
 function IndexOfLastOperator(array) {
   for (let i = array.length-1; i >= 0; i--) {
-    if (operators.includes(array[i])) {
+    if (operators.includes(array[i]) && operators.includes(array[i-1])) {
+      return i-1;
+    }
+    else if (operators.includes(array[i])) {
       return i;
     }
   }
@@ -173,4 +194,9 @@ btnDelete.addEventListener("click", function () {
 const btnSquared = document.querySelector("#btnSquared");
 btnSquared.addEventListener("click", function () {
   squareLastInput(inputs);
-})
+});
+
+const btnSign = document.querySelector("#btnSign");
+btnSign.addEventListener("click", function () {
+  changeSign(inputs);
+});
