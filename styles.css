@@ -25,12 +25,14 @@
 .display {
     background-color: #FCFCFC;
     height: 50px;
-    width: 285px;
+    min-width: 260px;
+    max-width: 260px;
     padding-right: 15px;
     border: 2px solid black;
     font-size: 32px;
     margin: 0 5px 5px 5px;
     align-items: flex-end;
+    overflow: hidden;
 }
 
 button {
