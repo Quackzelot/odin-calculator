@@ -28,15 +28,14 @@ function resetAll() {
 }
 
 function changeSign(array) {
-  let needSignChanged = array.slice(IndexOfLastOperator(array)+1);
-  array.splice(IndexOfLastOperator(array)+1, 100);
+  let needSignChanged = array.slice(indexOfLastOperator(array) + 1);
+  array.splice(indexOfLastOperator(array) + 1, 100);
   if (needSignChanged[0] == "-") {
     needSignChanged.shift();
     for (let i = 0; i < needSignChanged.length; i++) {
       array.push(needSignChanged[i]);
     }
-  }
-  else {
+  } else {
     needSignChanged.unshift("-");
     for (let i = 0; i < needSignChanged.length; i++) {
       array.push(needSignChanged[i]);
@@ -45,13 +44,14 @@ function changeSign(array) {
   display.textContent = array.join("");
 }
 
-function IndexOfLastOperator(array) {
-  for (let i = array.length-1; i >= 0; i--) {
-    if (operators.includes(array[i]) && operators.includes(array[i-1]) ||
-        operators.includes(array[i]) && i-1 < 0) {
-      return i-1;
-    }
-    else if (operators.includes(array[i])) {
+function indexOfLastOperator(array) {
+  for (let i = array.length - 1; i >= 0; i--) {
+    if (
+      (operators.includes(array[i]) && operators.includes(array[i - 1])) ||
+      (operators.includes(array[i]) && i - 1 < 0)
+    ) {
+      return i - 1;
+    } else if (operators.includes(array[i])) {
       return i;
     }
   }
@@ -59,21 +59,20 @@ function IndexOfLastOperator(array) {
 
 function checkForDot(array) {
   let dotPresent = false;
-  for (let i = array.length-1; i >= 0; i--) {
-    if (array[i] == "." || operators.includes(array[array.length-1])) {
+  for (let i = array.length - 1; i >= 0; i--) {
+    if (array[i] == "." || operators.includes(array[array.length - 1])) {
       dotPresent = true;
-    }
-    else if (operators.includes(array[i]) || i == 0) {
+    } else if (operators.includes(array[i]) || i == 0) {
       return dotPresent;
     }
   }
 }
 
 function squareLastInput(array) {
-  let toSquareArray = array.slice(IndexOfLastOperator(array)+1);
+  let toSquareArray = array.slice(indexOfLastOperator(array) + 1);
   toSquareArray = toSquareArray.join("");
   toSquareArray = toSquareArray * toSquareArray;
-  array.splice(IndexOfLastOperator(array)+1, 100);
+  array.splice(indexOfLastOperator(array) + 1, 100);
   array.push(toSquareArray);
   display.textContent = array.join("");
 }
@@ -97,9 +96,9 @@ function buttonClickInput(number) {
       operators.includes(inputs[inputs.length - 2])) ||
     (inputs[inputs.length - 1] == 0 && inputs.length == 1)
   ) {
-      inputs.splice(-1, 1);
-      inputs.push(number);
-      display.textContent = inputs.join("");
+    inputs.splice(-1, 1);
+    inputs.push(number);
+    display.textContent = inputs.join("");
   } else {
     inputs.push(number);
     display.textContent = inputs.join("");
@@ -114,6 +113,65 @@ function buttonClickOperator(sign) {
     console.log(inputs);
     display.textContent = inputs.join("");
   }
+}
+
+function combineNumbers() {
+  let backup;
+  let operator;
+  let lastOperator = inputs.length;
+  for (let i = inputs.length - 1; i >= 0; i--) {
+    if (operators.includes(inputs[i - 1]) && operators.includes(inputs[i])) {
+      operator = i;
+      backup = inputs.slice(operator, lastOperator).join("");
+      inputs.splice(operator, lastOperator - operator, backup);
+      i--;
+      lastOperator = i;
+    } else if (i == 0) {
+      backup = inputs.slice(i, lastOperator).join("");
+      inputs.splice(i, lastOperator, backup);
+    } else if (operators.includes(inputs[i])) {
+      operator = i + 1;
+      backup = inputs.slice(operator, lastOperator).join("");
+      inputs.splice(operator, lastOperator - operator, backup);
+      lastOperator = i;
+    }
+  }
+  console.log(inputs);
+}
+
+function buttonClickEqual() {
+  combineNumbers();
+  for (let j = 0; j < inputs.length; j++) {
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i] == "*") {
+        let number1 = Number(inputs[i - 1]);
+        let number2 = Number(inputs[i + 1]);
+        let solution = multiply(number1, number2);
+        inputs.splice(i - 1, 3, solution);
+      } else if (inputs[i] == "/") {
+        let number1 = Number(inputs[i - 1]);
+        let number2 = Number(inputs[i + 1]);
+        let solution = divide(number1, number2);
+        inputs.splice(i - 1, 3, solution);
+      }
+    }
+    for (let i = 0; i < inputs.length; i++) {
+      if (inputs[i] == "+") {
+        let number1 = Number(inputs[i - 1]);
+        let number2 = Number(inputs[i + 1]);
+        let solution = add(number1, number2);
+        inputs.splice(i - 1, 3, solution);
+      } else if (inputs[i] == "-") {
+        let number1 = Number(inputs[i - 1]);
+        let number2 = Number(inputs[i + 1]);
+        let solution = subtract(number1, number2);
+        inputs.splice(i - 1, 3, solution);
+      }
+    }
+  }
+  solution = inputs[0];
+  solution = Math.round(solution * 100) / 100;
+  display.textContent = solution;
 }
 
 let operators = ["+", "-", "*", "/"];
@@ -214,4 +272,9 @@ btnSquared.addEventListener("click", function () {
 const btnSign = document.querySelector("#btnSign");
 btnSign.addEventListener("click", function () {
   changeSign(inputs);
+});
+
+const btnEqual = document.querySelector("#btnEqual");
+btnEqual.addEventListener("click", function () {
+  buttonClickEqual();
 });

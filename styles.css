@@ -38,4 +38,5 @@ button {
     height: 45px;
     font-size: 16px;
     background-color: #FCFCFC;
+    border-radius: 5px;
 }
