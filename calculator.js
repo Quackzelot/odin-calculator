@@ -28,56 +28,56 @@ function resetAll() {
   display.textContent = "";
 }
 
-function changeSign(array) {
+function changeSign() {
   resetAfterSolution();
-  let needSignChanged = array.slice(indexOfLastOperator(array) + 1);
-  array.splice(indexOfLastOperator(array) + 1, 100);
+  let needSignChanged = inputs.slice(indexOfLastOperator(inputs) + 1);
+  inputs.splice(indexOfLastOperator(inputs) + 1, 100);
   if (needSignChanged[0] == "-") {
     needSignChanged.shift();
     for (let i = 0; i < needSignChanged.length; i++) {
-      array.push(needSignChanged[i]);
+      inputs.push(needSignChanged[i]);
     }
   } else {
     needSignChanged.unshift("-");
     for (let i = 0; i < needSignChanged.length; i++) {
-      array.push(needSignChanged[i]);
+      inputs.push(needSignChanged[i]);
     }
   }
-  display.textContent = array.join("");
+  display.textContent = inputs.join("");
 }
 
-function indexOfLastOperator(array) {
-  for (let i = array.length - 1; i >= 0; i--) {
+function indexOfLastOperator() {
+  for (let i = inputs.length - 1; i >= 0; i--) {
     if (
-      (operators.includes(array[i]) && operators.includes(array[i - 1])) ||
-      (operators.includes(array[i]) && i - 1 < 0)
+      (operators.includes(inputs[i]) && operators.includes(inputs[i - 1])) ||
+      (operators.includes(inputs[i]) && i - 1 < 0)
     ) {
       return i - 1;
-    } else if (operators.includes(array[i])) {
+    } else if (operators.includes(inputs[i])) {
       return i;
     }
   }
 }
 
-function checkForDot(array) {
+function checkForDot() {
   let dotPresent = false;
-  for (let i = array.length - 1; i >= 0; i--) {
-    if (array[i] == "." || operators.includes(array[array.length - 1])) {
+  for (let i = inputs.length - 1; i >= 0; i--) {
+    if (inputs[i] == "." || operators.includes(inputs[inputs.length - 1])) {
       dotPresent = true;
-    } else if (operators.includes(array[i]) || i == 0) {
+    } else if (operators.includes(inputs[i]) || i == 0) {
       return dotPresent;
     }
   }
 }
 
-function squareLastInput(array) {
-  let toSquare = array.slice(indexOfLastOperator(array) + 1);
+function squareLastInput() {
+  let toSquare = inputs.slice(indexOfLastOperator(inputs) + 1);
   toSquare = toSquare.join("");
   toSquare = toSquare * toSquare;
   toSquare = Math.round(toSquare * 100) / 100;
-  array.splice(indexOfLastOperator(array) + 1, 100);
-  array.push(toSquare);
-  display.textContent = array.join("");
+  inputs.splice(indexOfLastOperator(inputs) + 1, 100);
+  inputs.push(toSquare);
+  display.textContent = inputs.join("");
 }
 
 function resetAfterSolution() {
@@ -114,7 +114,6 @@ function buttonClickInput(number) {
   } else {
     inputs.push(number);
     display.textContent = inputs.join("");
-    console.log(inputs);
   }
 }
 
@@ -123,7 +122,6 @@ function buttonClickOperator(sign) {
   if (operators.includes(inputs[inputs.length - 1]) || inputs.length == 0) {
   } else {
     inputs.push(sign);
-    console.log(inputs);
     display.textContent = inputs.join("");
   }
 }
@@ -149,7 +147,6 @@ function combineNumbers() {
       lastOperator = i;
     }
   }
-  console.log(inputs);
 }
 
 function buttonClickEqual() {
@@ -193,8 +190,6 @@ function buttonClickEqual() {
 let solution = 10;
 let operators = ["+", "-", "*", "/"];
 let inputs = [];
-
-
 
 const display = document.querySelector(".display");
 
@@ -285,12 +280,12 @@ btnDelete.addEventListener("click", function () {
 
 const btnSquared = document.querySelector("#btnSquared");
 btnSquared.addEventListener("click", function () {
-  squareLastInput(inputs);
+  squareLastInput();
 });
 
 const btnSign = document.querySelector("#btnSign");
 btnSign.addEventListener("click", function () {
-  changeSign(inputs);
+  changeSign();
 });
 
 const btnEqual = document.querySelector("#btnEqual");
@@ -408,12 +403,12 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "²") {
-    squareLastInput(inputs);
+    squareLastInput();
   }
 });
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Tab") {
-    changeSign(inputs);
+    changeSign();
   }
 });
