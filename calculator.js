@@ -12,12 +12,13 @@ function multiply(number1, number2) {
 
 function divide(number1, number2) {
   if (number2 == 0) {
-    alert("Not gonna happen!");
+    alert("To infinity!");
   }
   return number1 / number2;
 }
 
 function deleteLastInput() {
+  resetAfterSolution();
   inputs.pop();
   display.textContent = inputs.join("");
 }
@@ -28,6 +29,7 @@ function resetAll() {
 }
 
 function changeSign(array) {
+  resetAfterSolution();
   let needSignChanged = array.slice(indexOfLastOperator(array) + 1);
   array.splice(indexOfLastOperator(array) + 1, 100);
   if (needSignChanged[0] == "-") {
@@ -69,15 +71,24 @@ function checkForDot(array) {
 }
 
 function squareLastInput(array) {
-  let toSquareArray = array.slice(indexOfLastOperator(array) + 1);
-  toSquareArray = toSquareArray.join("");
-  toSquareArray = toSquareArray * toSquareArray;
+  let toSquare = array.slice(indexOfLastOperator(array) + 1);
+  toSquare = toSquare.join("");
+  toSquare = toSquare * toSquare;
+  toSquare = Math.round(toSquare * 100) / 100;
   array.splice(indexOfLastOperator(array) + 1, 100);
-  array.push(toSquareArray);
+  array.push(toSquare);
   display.textContent = array.join("");
 }
 
+function resetAfterSolution() {
+  if (inputs[0] == solution) {
+    resetAll();
+    solution = 10;
+  }
+}
+
 function buttonClickDot(dot) {
+  resetAfterSolution();
   if (checkForDot(inputs) == false) {
     inputs.push(dot);
     display.textContent = inputs.join("");
@@ -85,6 +96,7 @@ function buttonClickDot(dot) {
 }
 
 function buttonClickInput(number) {
+  resetAfterSolution();
   if (
     (inputs[inputs.length - 1] == 0 &&
       number == 0 &&
@@ -107,6 +119,7 @@ function buttonClickInput(number) {
 }
 
 function buttonClickOperator(sign) {
+  resetAfterSolution();
   if (operators.includes(inputs[inputs.length - 1]) || inputs.length == 0) {
   } else {
     inputs.push(sign);
@@ -140,42 +153,48 @@ function combineNumbers() {
 }
 
 function buttonClickEqual() {
-  combineNumbers();
-  for (let j = 0; j < inputs.length; j++) {
-    for (let i = 0; i < inputs.length; i++) {
-      if (inputs[i] == "*") {
-        let number1 = Number(inputs[i - 1]);
-        let number2 = Number(inputs[i + 1]);
-        let solution = multiply(number1, number2);
-        inputs.splice(i - 1, 3, solution);
-      } else if (inputs[i] == "/") {
-        let number1 = Number(inputs[i - 1]);
-        let number2 = Number(inputs[i + 1]);
-        let solution = divide(number1, number2);
-        inputs.splice(i - 1, 3, solution);
+  if (inputs.length == 0) {
+  } else {
+    combineNumbers();
+    for (let j = 0; j < inputs.length; j++) {
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i] == "*") {
+          let number1 = Number(inputs[i - 1]);
+          let number2 = Number(inputs[i + 1]);
+          let solution = multiply(number1, number2);
+          inputs.splice(i - 1, 3, solution);
+        } else if (inputs[i] == "/") {
+          let number1 = Number(inputs[i - 1]);
+          let number2 = Number(inputs[i + 1]);
+          let solution = divide(number1, number2);
+          inputs.splice(i - 1, 3, solution);
+        }
+      }
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i] == "+") {
+          let number1 = Number(inputs[i - 1]);
+          let number2 = Number(inputs[i + 1]);
+          let solution = add(number1, number2);
+          inputs.splice(i - 1, 3, solution);
+        } else if (inputs[i] == "-") {
+          let number1 = Number(inputs[i - 1]);
+          let number2 = Number(inputs[i + 1]);
+          let solution = subtract(number1, number2);
+          inputs.splice(i - 1, 3, solution);
+        }
       }
     }
-    for (let i = 0; i < inputs.length; i++) {
-      if (inputs[i] == "+") {
-        let number1 = Number(inputs[i - 1]);
-        let number2 = Number(inputs[i + 1]);
-        let solution = add(number1, number2);
-        inputs.splice(i - 1, 3, solution);
-      } else if (inputs[i] == "-") {
-        let number1 = Number(inputs[i - 1]);
-        let number2 = Number(inputs[i + 1]);
-        let solution = subtract(number1, number2);
-        inputs.splice(i - 1, 3, solution);
-      }
-    }
+    solution = inputs[0];
+    solution = Math.round(solution * 100) / 100;
+    display.textContent = solution;
   }
-  solution = inputs[0];
-  solution = Math.round(solution * 100) / 100;
-  display.textContent = solution;
 }
 
+let solution = 10;
 let operators = ["+", "-", "*", "/"];
 let inputs = [];
+
+
 
 const display = document.querySelector(".display");
 
@@ -277,4 +296,124 @@ btnSign.addEventListener("click", function () {
 const btnEqual = document.querySelector("#btnEqual");
 btnEqual.addEventListener("click", function () {
   buttonClickEqual();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "0") {
+    buttonClickInput(0);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "1") {
+    buttonClickInput(1);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "2") {
+    buttonClickInput(2);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "3") {
+    buttonClickInput(3);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "4") {
+    buttonClickInput(4);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "5") {
+    buttonClickInput(5);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "6") {
+    buttonClickInput(6);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "7") {
+    buttonClickInput(7);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "8") {
+    buttonClickInput(8);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "9") {
+    buttonClickInput(9);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === ".") {
+    buttonClickDot(".");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "*") {
+    buttonClickOperator("*");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "+") {
+    buttonClickInput("+");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "-") {
+    buttonClickInput("-");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "/") {
+    buttonClickInput("/");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Backspace") {
+    deleteLastInput();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    buttonClickEqual();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    resetAll();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "²") {
+    squareLastInput(inputs);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Tab") {
+    changeSign(inputs);
+  }
 });

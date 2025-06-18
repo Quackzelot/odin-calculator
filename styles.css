@@ -40,3 +40,12 @@ button {
     background-color: #FCFCFC;
     border-radius: 5px;
 }
+
+.keyboard {
+    width: 320px;
+    align-items: flex-start;
+}
+
+li {
+    align-self: flex-start;
+}
