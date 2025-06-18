@@ -57,6 +57,18 @@ function IndexOfLastOperator(array) {
   }
 }
 
+function checkForDot(array) {
+  let dotPresent = false;
+  for (let i = array.length-1; i >= 0; i--) {
+    if (array[i] == "." || operators.includes(array[array.length-1])) {
+      dotPresent = true;
+    }
+    else if (operators.includes(array[i]) || i == 0) {
+      return dotPresent;
+    }
+  }
+}
+
 function squareLastInput(array) {
   let toSquareArray = array.slice(IndexOfLastOperator(array)+1);
   toSquareArray = toSquareArray.join("");
@@ -64,6 +76,13 @@ function squareLastInput(array) {
   array.splice(IndexOfLastOperator(array)+1, 100);
   array.push(toSquareArray);
   display.textContent = array.join("");
+}
+
+function buttonClickDot(dot) {
+  if (checkForDot(inputs) == false) {
+    inputs.push(dot);
+    display.textContent = inputs.join("");
+  }
 }
 
 function buttonClickInput(number) {
@@ -78,14 +97,9 @@ function buttonClickInput(number) {
       operators.includes(inputs[inputs.length - 2])) ||
     (inputs[inputs.length - 1] == 0 && inputs.length == 1)
   ) {
-    if (number == ".") {
-      inputs.push(number);
-      display.textContent = inputs.join("");
-    } else {
       inputs.splice(-1, 1);
       inputs.push(number);
       display.textContent = inputs.join("");
-    }
   } else {
     inputs.push(number);
     display.textContent = inputs.join("");
@@ -159,7 +173,7 @@ btn9.addEventListener("click", function () {
 
 const btnDot = document.querySelector("#btnDot");
 btnDot.addEventListener("click", function () {
-  buttonClickInput(".");
+  buttonClickDot(".");
 });
 
 const btnPlus = document.querySelector("#btnPlus");
